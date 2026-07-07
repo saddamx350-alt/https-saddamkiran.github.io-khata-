@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Saddam &amp; Kiran — Business Hisab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --khata-red:#8E2E24;
+  --khata-deep:#6E211A;
+  --paper:#FBF6EC;
+  --paper-line:#EADFC9;
+  --ink:#2A2320;
+  --ink-soft:#6B5F57;
+  --money-in:#1E7A46;
+  --money-in-bg:#E4F3E9;
+  --money-out:#B4441C;
+  --baaki:#B03A2E;
+  --baaki-bg:#FBE5E1;
+  --gold:#C9962E;
+  --white:#FFFFFF;
+  --radius:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:'Hind',system-ui,sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  font-size:16px;
+  padding-bottom:84px;
+}
+h1,h2,h3{font-family:'Baloo 2','Hind',sans-serif}
+
+/* ---------- Header ---------- */
+header{
+  background:linear-gradient(160deg,var(--khata-red),var(--khata-deep));
+  color:#FFF6E8;
+  padding:14px 16px 16px;
+  border-bottom:4px solid var(--gold);
+}
+header .brand{display:flex;align-items:center;gap:10px}
+header .book{
+  width:38px;height:38px;border-radius:8px;
+  background:var(--gold);color:var(--khata-deep);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Baloo 2';font-weight:800;font-size:20px;
+  box-shadow:inset 0 -3px 0 rgba(0,0,0,.18);
+}
+header h1{font-size:20px;font-weight:800;line-height:1.1}
+header .sub{font-size:12px;opacity:.85;font-weight:500}
+
+/* ---------- Totals ---------- */
+.totals{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:12px 14px 0}
+.tcard{
+  background:var(--white);border-radius:var(--radius);
+  padding:11px 13px;border:1px solid var(--paper-line);
+  box-shadow:0 1px 3px rgba(42,35,32,.06);
+}
+.tcard .lbl{font-size:12px;font-weight:600;color:var(--ink-soft)}
+.tcard .amt{font-family:'Baloo 2';font-size:20px;font-weight:800;line-height:1.25;word-break:break-all}
+.tcard.today .amt{color:var(--gold)}
+.tcard.in .amt{color:var(--money-in)}
+.tcard.out .amt{color:var(--money-out)}
+.tcard.baaki .amt{color:var(--baaki)}
+.tcard.bal{
+  grid-column:1 / -1;
+  background:linear-gradient(135deg,#FFF9EE,#FDF2DC);
+  border:1.5px solid var(--gold);
+}
+.tcard.bal .amt{font-size:30px;color:var(--khata-red)}
+.tcard.bal .amt.minus{color:var(--money-out)}
+
+/* ---------- Pages ---------- */
+.page{display:none;padding:14px;animation:fade .18s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.sec-title{display:flex;align-items:center;justify-content:space-between;margin:8px 2px 10px}
+.sec-title h2{font-size:17px;font-weight:700}
+.sec-title .count{font-size:12px;font-weight:600;color:var(--ink-soft);background:var(--paper-line);padding:3px 9px;border-radius:20px}
+
+/* ---------- Search ---------- */
+.search{position:relative;margin-bottom:10px}
+.search input{
+  width:100%;padding:12px 12px 12px 40px;border:1.5px solid var(--paper-line);
+  border-radius:11px;font-family:'Hind';font-size:15px;background:var(--white);
+}
+.search input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+.search .sic{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:16px;opacity:.5}
+
+/* ---------- Cards ---------- */
+.card{
+  background:var(--white);border:1px solid var(--paper-line);
+  border-radius:var(--radius);padding:13px 14px;margin-bottom:10px;
+  box-shadow:0 1px 2px rgba(42,35,32,.05);
+}
+.cust-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;cursor:pointer}
+.cust-name{font-weight:700;font-size:16.5px}
+.cust-work{font-size:12.5px;color:var(--ink-soft);font-weight:500}
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;margin-top:5px}
+.badge.chalu{background:#FFF3D6;color:#8a6a12;border:1px solid #EBD9A6}
+.badge.done{background:var(--money-in-bg);color:var(--money-in);border:1px solid #BFE3CC}
+
+/* diya / baaki strip */
+.db-strip{display:flex;gap:8px;margin-top:10px}
+.db{flex:1;border-radius:10px;padding:7px 10px;text-align:center}
+.db .l{font-size:11px;font-weight:700}
+.db .v{font-family:'Baloo 2';font-weight:800;font-size:16px;line-height:1.2}
+.db.diya{background:var(--money-in-bg)}
+.db.diya .l,.db.diya .v{color:var(--money-in)}
+.db.baki{background:var(--baaki-bg)}
+.db.baki .l,.db.baki .v{color:var(--baaki)}
+.db.clear{background:#F0EBDD}
+.db.clear .l,.db.clear .v{color:var(--ink-soft)}
+.progress{height:6px;background:var(--paper-line);border-radius:6px;margin-top:9px;overflow:hidden}
+.progress .fill{height:100%;background:var(--money-in);border-radius:6px;transition:width .3s}
+
+.pay-list{margin-top:10px;border-top:1.5px dashed var(--paper-line);padding-top:8px;display:none}
+.card.open .pay-list{display:block}
+.pay-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #F4EDDD;font-size:14px}
+.pay-row:last-child{border-bottom:none}
+.pay-row .pdate{color:var(--ink-soft);font-size:12px}
+.pay-row .pamt{font-weight:700;color:var(--money-in)}
+.pay-row .ptype{font-size:11px;font-weight:600;color:var(--ink-soft)}
+.del{color:#C33;font-size:17px;padding:2px 6px;background:none;border:none}
+.cust-actions{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+
+.exp-row{display:flex;justify-content:space-between;align-items:center}
+.exp-item{font-weight:600;font-size:15px}
+.exp-shop{font-size:12px;color:var(--ink-soft)}
+.exp-amt{font-family:'Baloo 2';font-weight:800;color:var(--money-out);white-space:nowrap}
+
+/* ---------- Buttons ---------- */
+.btn{
+  border:none;border-radius:11px;font-family:'Hind';font-weight:700;
+  font-size:14.5px;padding:11px 14px;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+}
+.btn.full{width:100%}
+.btn.red{background:var(--khata-red);color:#FFF6E8}
+.btn.green{background:var(--money-in);color:#fff}
+.btn.soft{background:var(--paper-line);color:var(--ink)}
+.btn.outline{background:transparent;border:1.5px solid var(--khata-red);color:var(--khata-red)}
+.btn.small{padding:8px 11px;font-size:13px;border-radius:9px}
+.btn.wa{background:#25D366;color:#fff}
+.btn:active{transform:scale(.98)}
+
+/* ---------- Sheets ---------- */
+.overlay{position:fixed;inset:0;background:rgba(42,35,32,.5);display:none;align-items:flex-end;z-index:50}
+.overlay.show{display:flex}
+.sheet{
+  background:var(--paper);width:100%;border-radius:20px 20px 0 0;
+  padding:18px 16px 24px;max-height:88vh;overflow:auto;animation:up .22s ease;
+}
+@keyframes up{from{transform:translateY(40px);opacity:.6}to{transform:none;opacity:1}}
+.sheet h3{font-size:18px;margin-bottom:12px;color:var(--khata-red)}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:4px}
+.field .hint{font-size:11.5px;color:var(--ink-soft);margin-top:3px}
+.field input,.field select{
+  width:100%;padding:12px;border:1.5px solid var(--paper-line);
+  border-radius:10px;font-family:'Hind';font-size:16px;background:var(--white);color:var(--ink);
+}
+.field input:focus,.field select:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+.row2{display:flex;gap:10px}
+.row2 .btn{flex:1}
+
+/* ---------- Nav ---------- */
+nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:40;
+  background:var(--white);border-top:1.5px solid var(--paper-line);
+  display:flex;padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+}
+nav button{
+  flex:1;background:none;border:none;font-family:'Hind';
+  font-size:11.5px;font-weight:600;color:var(--ink-soft);
+  display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;
+}
+nav button .ic{font-size:20px;line-height:1}
+nav button.on{color:var(--khata-red)}
+nav button.on .ic{transform:scale(1.12)}
+
+/* ---------- Misc ---------- */
+.empty{
+  text-align:center;color:var(--ink-soft);padding:30px 16px;
+  border:1.5px dashed var(--paper-line);border-radius:var(--radius);
+  font-size:14px;background:#FFFDF7;
+}
+.recent-title{font-size:14px;font-weight:700;margin:16px 2px 8px;color:var(--ink-soft)}
+.mini-row{display:flex;justify-content:space-between;padding:9px 12px;background:var(--white);border:1px solid var(--paper-line);border-radius:10px;margin-bottom:7px;font-size:14px}
+.mini-row .m-in{color:var(--money-in);font-weight:700}
+.mini-row .m-out{color:var(--money-out);font-weight:700}
+.note{font-size:13px;color:var(--ink-soft);line-height:1.55;margin-top:8px}
+.toast{
+  position:fixed;left:50%;bottom:96px;transform:translateX(-50%);
+  background:var(--ink);color:#fff;padding:10px 18px;border-radius:30px;
+  font-size:14px;font-weight:600;opacity:0;transition:.25s;z-index:60;pointer-events:none;white-space:nowrap;
+}
+.toast.show{opacity:1}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="book">₹</div>
+    <div>
+      <h1>Saddam &amp; Kiran</h1>
+      <div class="sub">Partnership Khata · Hisab-Kitab</div>
+    </div>
+  </div>
+</header>
+
+<div class="totals">
+  <div class="tcard today"><div class="lbl">🌞 Aaj Aaya</div><div class="amt" id="tToday">₹0</div></div>
+  <div class="tcard baaki"><div class="lbl">⏳ Total Baaki (Lena Hai)</div><div class="amt" id="tBaaki">₹0</div></div>
+  <div class="tcard in"><div class="lbl">💰 Total Aaya</div><div class="amt" id="tIn">₹0</div></div>
+  <div class="tcard out"><div class="lbl">🛠️ Total Kharcha</div><div class="amt" id="tOut">₹0</div></div>
+  <div class="tcard bal"><div class="lbl">Cash Balance (Aaya − Kharcha)</div><div class="amt" id="tBal">₹0</div></div>
+</div>
+
+<!-- ============ DASHBOARD ============ -->
+<div class="page active" id="page-home">
+  <div class="recent-title">🌞 Aaj Ke Payments</div>
+  <div id="todayList"></div>
+  <div class="recent-title">📋 Recent Entries</div>
+  <div id="recentList"></div>
+  <button class="btn wa full" style="margin-top:14px" onclick="shareWhatsApp()">📲 Partner ko Poora Hisab WhatsApp Karo</button>
+</div>
+
+<!-- ============ CUSTOMERS ============ -->
+<div class="page" id="page-cust">
+  <div class="sec-title"><h2>👥 Customer Khata</h2><span class="count" id="custCount">0</span></div>
+  <div class="search">
+    <span class="sic">🔍</span>
+    <input type="text" id="custSearch" placeholder="Customer ka naam search karo..." oninput="render()">
+  </div>
+  <button class="btn red full" onclick="openCustSheet()">+ Naya Customer Add Karo</button>
+  <div style="height:12px"></div>
+  <div id="custList"></div>
+</div>
+
+<!-- ============ EXPENSES ============ -->
+<div class="page" id="page-exp">
+  <div class="sec-title"><h2>🛠️ Hardware Kharcha</h2><span class="count" id="expCount">0</span></div>
+  <button class="btn red full" onclick="openExpSheet()">+ Naya Kharcha Add Karo</button>
+  <div style="height:12px"></div>
+  <div id="expList"></div>
+</div>
+
+<!-- ============ BACKUP ============ -->
+<div class="page" id="page-backup">
+  <div class="sec-title"><h2>💾 Backup & Partner Sharing</h2></div>
+  <div class="card">
+    <b>Backup File Download Karo</b>
+    <p class="note">Poora khata ek file mein download hoga. Ye file partner ko WhatsApp pe bhejo — vo apne phone mein Import karega to same hisab dikhega. Har hafte ek baar zaroor karo!</p>
+    <button class="btn green full" style="margin-top:10px" onclick="exportData()">⬇️ Backup Download (JSON)</button>
+  </div>
+  <div class="card">
+    <b>Backup Import Karo</b>
+    <p class="note">Partner ne jo backup file bheji hai, use yahan select karo. <b>Dhyan rahe:</b> import karne pe abhi ka data replace ho jayega.</p>
+    <input type="file" id="importFile" accept=".json" style="margin-top:10px;font-size:14px" onchange="importData(event)">
+  </div>
+  <div class="card">
+    <b>Sab Kuch Delete (Naya Hisab)</b>
+    <p class="note">Poora khata saaf ho jayega. Pehle backup zaroor download karo!</p>
+    <button class="btn outline full" style="margin-top:10px" onclick="resetAll()">🗑️ Poora Khata Reset Karo</button>
+  </div>
+</div>
+
+<!-- ============ CUSTOMER SHEET ============ -->
+<div class="overlay" id="custSheet">
+  <div class="sheet">
+    <h3>Naya Customer</h3>
+    <div class="field"><label>Customer ka Naam *</label><input id="cName" type="text" placeholder="Jaise: Sharma Ji, Wagholi"></div>
+    <div class="field"><label>Kaam (kya banana hai)</label>
+      <select id="cWork" onchange="cWorkOther.style.display=this.value==='__other__'?'block':'none'">
+        <option value="">— Kaam Select Karo —</option>
+        <option value="Window Grill">Window Grill</option>
+        <option value="Steel Railing">Steel Railing</option>
+        <option value="Gate">Gate</option>
+        <option value="Shed">Shed</option>
+        <option value="Welding Work">Welding Work</option>
+        <option value="Safety Door">Safety Door</option>
+        <option value="Rolling Shutter">Rolling Shutter</option>
+        <option value="__other__">➕ Doosra Kaam (khud likho)</option>
+      </select>
+      <input id="cWorkOther" type="text" placeholder="Kaam ka naam likho..." style="display:none;margin-top:8px">
+    </div>
+    <div class="field"><label>Kaam ka Total Rate (₹)</label><input id="cDeal" type="number" inputmode="numeric" placeholder="Jaise: 45000">
+      <div class="hint">Ye likhoge to har customer ka BAAKI amount apne aap dikhega</div>
+    </div>
+    <div class="field"><label>Abhi Kitna Diya — Advance (₹) *</label><input id="cAdv" type="number" inputmode="numeric" placeholder="Jaise: 5000"></div>
+    <div class="row2">
+      <button class="btn soft" onclick="closeSheets()">Cancel</button>
+      <button class="btn red" onclick="saveCustomer()">✔ Save Karo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PAYMENT SHEET ============ -->
+<div class="overlay" id="paySheet">
+  <div class="sheet">
+    <h3 id="payTitle">Payment Add Karo</h3>
+    <div class="field"><label>Amount (₹) *</label><input id="pAmt" type="number" inputmode="numeric" placeholder="Jaise: 3000"></div>
+    <div class="field"><label>Payment Type</label>
+      <select id="pType">
+        <option value="payment">Beech ka Payment</option>
+        <option value="final">Final Payment (kaam complete)</option>
+      </select>
+    </div>
+    <div class="field"><label>Note (optional)</label><input id="pNote" type="text" placeholder="Cash / GPay / Cheque"></div>
+    <div class="row2">
+      <button class="btn soft" onclick="closeSheets()">Cancel</button>
+      <button class="btn green" onclick="savePayment()">✔ Add Karo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ EDIT DEAL SHEET ============ -->
+<div class="overlay" id="dealSheet">
+  <div class="sheet">
+    <h3 id="dealTitle">Rate Change Karo</h3>
+    <div class="field"><label>Kaam ka Total Rate (₹)</label><input id="dAmt" type="number" inputmode="numeric" placeholder="Jaise: 45000"></div>
+    <div class="row2">
+      <button class="btn soft" onclick="closeSheets()">Cancel</button>
+      <button class="btn red" onclick="saveDeal()">✔ Save Karo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ EXPENSE SHEET ============ -->
+<div class="overlay" id="expSheet">
+  <div class="sheet">
+    <h3>Naya Kharcha</h3>
+    <div class="field"><label>Saman ka Naam *</label>
+      <select id="eItem" onchange="eItemOther.style.display=this.value==='__other__'?'block':'none'">
+        <option value="">— Saman Select Karo —</option>
+        <option value="Roller">Roller</option>
+        <option value="Cutting Wheel">Cutting Wheel</option>
+        <option value="Welding Rod">Welding Rod</option>
+        <option value="Red Oxide">Red Oxide</option>
+        <option value="Holl Pass">Holl Pass</option>
+        <option value="Hardware">Hardware</option>
+        <option value="MS Material">MS Material</option>
+        <option value="SS Material">SS Material</option>
+        <option value="Labour Payment">Labour Payment</option>
+        <option value="__other__">➕ Doosra Saman (khud likho)</option>
+      </select>
+      <input id="eItemOther" type="text" placeholder="Saman ka naam likho..." style="display:none;margin-top:8px">
+    </div>
+    <div class="field"><label>Amount (₹) *</label><input id="eAmt" type="number" inputmode="numeric" placeholder="Jaise: 2500"></div>
+    <div class="row2">
+      <button class="btn soft" onclick="closeSheets()">Cancel</button>
+      <button class="btn red" onclick="saveExpense()">✔ Save Karo</button>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <button class="on" data-p="home" onclick="go('home',this)"><span class="ic">🏠</span>Hisab</button>
+  <button data-p="cust" onclick="go('cust',this)"><span class="ic">👥</span>Customer</button>
+  <button data-p="exp" onclick="go('exp',this)"><span class="ic">🛠️</span>Kharcha</button>
+  <button data-p="backup" onclick="go('backup',this)"><span class="ic">💾</span>Backup</button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= DATA ================= */
+const KEY='vanakam_khata_v1';
+let data={customers:[],expenses:[]};
+try{const s=localStorage.getItem(KEY);if(s)data=JSON.parse(s);}catch(e){}
+/* migrate old entries — add dealAmount if missing */
+data.customers.forEach(c=>{if(c.dealAmount===undefined)c.dealAmount=0;});
+function save(){localStorage.setItem(KEY,JSON.stringify(data));render();}
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const inr=n=>'₹'+Number(n||0).toLocaleString('en-IN');
+const today=()=>{const d=new Date();return d.getDate().toString().padStart(2,'0')+'/'+(d.getMonth()+1).toString().padStart(2,'0')+'/'+d.getFullYear();};
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
+
+/* ================= NAV ================= */
+function go(p,btn){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  window.scrollTo(0,0);
+}
+
+/* ================= SHEETS ================= */
+let payCustId=null,dealCustId=null;
+function openCustSheet(){document.getElementById('custSheet').classList.add('show');setTimeout(()=>cName.focus(),100);}
+function openPaySheet(id){payCustId=id;const c=data.customers.find(x=>x.id===id);payTitle.textContent=c.name+' — Payment Add';document.getElementById('paySheet').classList.add('show');pAmt.value='';pNote.value='';pType.value='payment';setTimeout(()=>pAmt.focus(),100);}
+function openDealSheet(id){dealCustId=id;const c=data.customers.find(x=>x.id===id);dealTitle.textContent=c.name+' — Rate Change';dAmt.value=c.dealAmount||'';document.getElementById('dealSheet').classList.add('show');}
+function openExpSheet(){document.getElementById('expSheet').classList.add('show');setTimeout(()=>eItem.focus(),100);}
+function closeSheets(){document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('show'));}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeSheets();}));
+
+/* ================= CUSTOMERS ================= */
+function saveCustomer(){
+  const name=cName.value.trim();
+  let work=cWork.value;
+  if(work==='__other__')work=cWorkOther.value.trim();
+  const deal=parseFloat(cDeal.value)||0,adv=parseFloat(cAdv.value);
+  if(!name){toast('Customer ka naam likho');return;}
+  if(!adv||adv<=0){toast('Advance amount likho');return;}
+  data.customers.unshift({id:uid(),name,work,dealAmount:deal,payments:[{id:uid(),amount:adv,date:today(),type:'advance',note:''}],finalDone:false});
+  cName.value='';cWork.value='';cWorkOther.value='';cWorkOther.style.display='none';cDeal.value='';cAdv.value='';
+  closeSheets();save();toast('✔ '+name+' add ho gaya');
+}
+function savePayment(){
+  const amt=parseFloat(pAmt.value);
+  if(!amt||amt<=0){toast('Amount likho');return;}
+  const c=data.customers.find(x=>x.id===payCustId);if(!c)return;
+  const type=pType.value;
+  c.payments.push({id:uid(),amount:amt,date:today(),type,note:pNote.value.trim()});
+  if(type==='final')c.finalDone=true;
+  closeSheets();save();toast(type==='final'?'✔ Final payment! Kaam complete 🎉':'✔ Payment add ho gaya');
+}
+function saveDeal(){
+  const c=data.customers.find(x=>x.id===dealCustId);if(!c)return;
+  c.dealAmount=parseFloat(dAmt.value)||0;
+  closeSheets();save();toast('✔ Update ho gaya');
+}
+function toggleCust(id){document.getElementById('cust-'+id).classList.toggle('open');}
+function delPayment(cid,pid){
+  if(!confirm('Ye payment delete karna hai?'))return;
+  const c=data.customers.find(x=>x.id===cid);
+  c.payments=c.payments.filter(p=>p.id!==pid);
+  if(!c.payments.some(p=>p.type==='final'))c.finalDone=false;
+  if(c.payments.length===0){if(confirm(c.name+' ka koi payment nahi bacha. Customer bhi delete karein?')){data.customers=data.customers.filter(x=>x.id!==cid);}}
+  save();
+}
+function delCustomer(id){
+  const c=data.customers.find(x=>x.id===id);
+  if(!confirm(c.name+' ka poora khata delete hoga. Pakka?'))return;
+  data.customers=data.customers.filter(x=>x.id!==id);save();toast('Delete ho gaya');
+}
+const custTotal=c=>c.payments.reduce((s,p)=>s+p.amount,0);
+const custBaaki=c=>Math.max(0,(c.dealAmount||0)-custTotal(c));
+const typeLabel={advance:'Advance',payment:'Payment',final:'Final'};
+
+/* baaki reminder on WhatsApp */
+function remindCust(id){
+  const c=data.customers.find(x=>x.id===id);if(!c)return;
+  const baaki=custBaaki(c);
+  let msg='Namaste '+c.name+' ji 🙏\n\nVanakam Fabrication ki taraf se:\n';
+  if(c.work)msg+='Kaam: '+c.work+'\n';
+  if(c.dealAmount)msg+='Total Rate: '+inr(c.dealAmount)+'\n';
+  msg+='Ab tak diya: '+inr(custTotal(c))+'\n';
+  if(baaki>0)msg+='*Baaki amount: '+inr(baaki)+'*\n\nKripya baaki payment jald karein. Dhanyawad! 🙏';
+  else msg+='\nDhanyawad! 🙏';
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+
+/* ================= EXPENSES ================= */
+function saveExpense(){
+  let item=eItem.value;
+  if(item==='__other__')item=eItemOther.value.trim();
+  const amt=parseFloat(eAmt.value);
+  if(!item){toast('Saman select karo');return;}
+  if(!amt||amt<=0){toast('Amount likho');return;}
+  data.expenses.unshift({id:uid(),item,amount:amt,date:today()});
+  eItem.value='';eItemOther.value='';eItemOther.style.display='none';eAmt.value='';
+  closeSheets();save();toast('✔ Kharcha add ho gaya');
+}
+function delExpense(id){
+  if(!confirm('Ye kharcha delete karna hai?'))return;
+  data.expenses=data.expenses.filter(x=>x.id!==id);save();
+}
+
+/* ================= RENDER ================= */
+function render(){
+  const totalIn=data.customers.reduce((s,c)=>s+custTotal(c),0);
+  const totalOut=data.expenses.reduce((s,e)=>s+e.amount,0);
+  const totalBaaki=data.customers.reduce((s,c)=>s+custBaaki(c),0);
+  const td=today();
+  const todayIn=data.customers.reduce((s,c)=>s+c.payments.filter(p=>p.date===td).reduce((a,p)=>a+p.amount,0),0);
+  const bal=totalIn-totalOut;
+  tToday.textContent=inr(todayIn);
+  tBaaki.textContent=inr(totalBaaki);
+  tIn.textContent=inr(totalIn);
+  tOut.textContent=inr(totalOut);
+  tBal.textContent=(bal<0?'− ':'')+inr(Math.abs(bal));
+  tBal.classList.toggle('minus',bal<0);
+
+  /* customer list (with search) */
+  const q=(custSearch.value||'').trim().toLowerCase();
+  const list=q?data.customers.filter(c=>c.name.toLowerCase().includes(q)||(c.work||'').toLowerCase().includes(q)):data.customers;
+  custCount.textContent=data.customers.length+' customer';
+  custList.innerHTML=list.length?list.map(c=>{
+    const paid=custTotal(c),baaki=custBaaki(c);
+    const pct=c.dealAmount>0?Math.min(100,Math.round(paid/c.dealAmount*100)):0;
+    return `
+    <div class="card" id="cust-${c.id}">
+      <div class="cust-top" onclick="toggleCust('${c.id}')">
+        <div>
+          <div class="cust-name">${esc(c.name)}</div>
+          ${c.work?`<div class="cust-work">${esc(c.work)}${c.dealAmount?' · Rate: '+inr(c.dealAmount):''}</div>`:(c.dealAmount?`<div class="cust-work">Rate: ${inr(c.dealAmount)}</div>`:'')}
+          <span class="badge ${c.finalDone?'done':'chalu'}">${c.finalDone?'✔ Final Ho Gaya':'⏳ Kaam Chalu'}</span>
+        </div>
+        <div style="text-align:right;font-size:11px;color:var(--ink-soft)">${c.payments.length} payment ▾</div>
+      </div>
+      <div class="db-strip">
+        <div class="db diya"><div class="l">DIYA</div><div class="v">${inr(paid)}</div></div>
+        ${c.dealAmount>0?
+          (baaki>0?`<div class="db baki"><div class="l">BAAKI</div><div class="v">${inr(baaki)}</div></div>`
+                  :`<div class="db clear"><div class="l">BAAKI</div><div class="v">✔ Clear</div></div>`)
+          :''}
+      </div>
+      ${c.dealAmount>0?`<div class="progress"><div class="fill" style="width:${pct}%"></div></div>`:''}
+      <div class="pay-list">
+        ${c.payments.map(p=>`
+          <div class="pay-row">
+            <div><span class="ptype">${typeLabel[p.type]||'Payment'}</span> <span class="pdate">· ${p.date}${p.note?' · '+esc(p.note):''}</span></div>
+            <div style="display:flex;align-items:center;gap:4px">
+              <span class="pamt">+${inr(p.amount)}</span>
+              <button class="del" onclick="delPayment('${c.id}','${p.id}')" aria-label="Delete">✕</button>
+            </div>
+          </div>`).join('')}
+        <div class="cust-actions">
+          <button class="btn green small" style="flex:1" onclick="openPaySheet('${c.id}')">+ Payment</button>
+          ${baaki>0?`<button class="btn wa small" onclick="remindCust('${c.id}')">📲 Baaki Yaad Dilao</button>`:''}
+          <button class="btn soft small" onclick="openDealSheet('${c.id}')">✏️ Rate</button>
+          <button class="btn outline small" onclick="delCustomer('${c.id}')">🗑️</button>
+        </div>
+      </div>
+    </div>`;}).join(''):
+    (q?`<div class="empty">"${esc(q)}" naam ka customer nahi mila</div>`
+      :`<div class="empty">Abhi koi customer nahi hai.<br>Upar ke button se pehla customer add karo 👆</div>`);
+
+  /* expenses */
+  expCount.textContent=data.expenses.length+' entry';
+  expList.innerHTML=data.expenses.length?data.expenses.map(e=>`
+    <div class="card exp-row">
+      <div>
+        <div class="exp-item">${esc(e.item)}</div>
+        <div class="exp-shop">${e.date}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span class="exp-amt">−${inr(e.amount)}</span>
+        <button class="del" onclick="delExpense('${e.id}')" aria-label="Delete">✕</button>
+      </div>
+    </div>`).join(''):
+    `<div class="empty">Abhi koi kharcha add nahi hua.<br>Hardware se jo bhi kharido, yahan likho 🛠️</div>`;
+
+  /* today + recent */
+  const rec=[];
+  data.customers.forEach(c=>c.payments.forEach(p=>rec.push({t:'in',name:c.name,amt:p.amount,date:p.date,type:typeLabel[p.type]||'Payment',id:p.id})));
+  data.expenses.forEach(e=>rec.push({t:'out',name:e.item,amt:e.amount,date:e.date,type:'Kharcha',id:e.id}));
+  rec.sort((a,b)=>a.id<b.id?1:-1);
+  const todayRows=rec.filter(r=>r.t==='in'&&r.date===td);
+  todayList.innerHTML=todayRows.length?todayRows.map(r=>`
+    <div class="mini-row"><div>${esc(r.name)} <span style="font-size:11px;color:var(--ink-soft)">· ${r.type}</span></div><div class="m-in">+${inr(r.amt)}</div></div>`).join(''):
+    `<div class="empty" style="padding:16px">Aaj abhi tak koi payment nahi aaya</div>`;
+  recentList.innerHTML=rec.length?rec.slice(0,8).map(r=>`
+    <div class="mini-row">
+      <div>${esc(r.name)} <span style="font-size:11px;color:var(--ink-soft)">· ${r.type} · ${r.date}</span></div>
+      <div class="${r.t==='in'?'m-in':'m-out'}">${r.t==='in'?'+':'−'}${inr(r.amt)}</div>
+    </div>`).join(''):
+    `<div class="empty">Khata abhi khali hai.<br>Customer ya Kharcha add karke shuru karo 📖</div>`;
+}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+
+/* ================= WHATSAPP SHARE ================= */
+function shareWhatsApp(){
+  const totalIn=data.customers.reduce((s,c)=>s+custTotal(c),0);
+  const totalOut=data.expenses.reduce((s,e)=>s+e.amount,0);
+  const totalBaaki=data.customers.reduce((s,c)=>s+custBaaki(c),0);
+  let msg='📖 *SADDAM & KIRAN — HISAB*\n'+today()+'\n\n';
+  msg+='💰 Total Aaya: '+inr(totalIn)+'\n';
+  msg+='🛠️ Total Kharcha: '+inr(totalOut)+'\n';
+  msg+='✅ *Cash Balance: '+inr(totalIn-totalOut)+'*\n';
+  msg+='⏳ Total Baaki (lena hai): '+inr(totalBaaki)+'\n\n';
+  if(data.customers.length){
+    msg+='👥 *CUSTOMER KHATA:*\n';
+    data.customers.forEach(c=>{
+      const b=custBaaki(c);
+      msg+='• '+c.name+(c.work?' ('+c.work+')':'')+'\n   Diya: '+inr(custTotal(c))+(c.dealAmount?' | Baaki: '+(b>0?inr(b):'✔ Clear'):'')+(c.finalDone?' ✔':'')+'\n';
+    });
+    msg+='\n';
+  }
+  if(data.expenses.length){
+    msg+='🛒 *KHARCHA:*\n';
+    data.expenses.slice(0,15).forEach(e=>{msg+='• '+e.item+': '+inr(e.amount)+'\n';});
+    if(data.expenses.length>15)msg+='...aur '+(data.expenses.length-15)+' entries\n';
+  }
+  window.open('https://wa.me/917350739871?text='+encodeURIComponent(msg),'_blank');
+}
+
+/* ================= BACKUP ================= */
+function exportData(){
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  const d=new Date();
+  a.download='saddam-kiran-khata-'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()+'.json';
+  a.click();
+  toast('✔ Backup download ho gaya');
+}
+function importData(ev){
+  const f=ev.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const d=JSON.parse(r.result);
+      if(!d.customers||!d.expenses)throw 0;
+      if(!confirm('Import karne pe abhi ka data replace hoga. Pakka?'))return;
+      data=d;
+      data.customers.forEach(c=>{if(c.dealAmount===undefined)c.dealAmount=0;});
+      save();toast('✔ Import ho gaya');
+    }catch(e){toast('❌ File sahi nahi hai');}
+  };
+  r.readAsText(f);
+  ev.target.value='';
+}
+function resetAll(){
+  if(!confirm('Poora khata delete hoga! Backup download kiya?'))return;
+  if(!confirm('Last confirm — sab kuch delete karein?'))return;
+  data={customers:[],expenses:[]};save();toast('Khata reset ho gaya');
+}
+
+render();
+</script>
+</body>
+</html>
